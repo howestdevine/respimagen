@@ -17,8 +17,8 @@ const srcsetGenerator = (files) => {
   }, {});
 
   // generate srcset for each extension
-  const srcsets = Object.entries(groupedFiles).map(
-    ([ext, files]) =>
+  const srcsets = Object.values(groupedFiles).map(
+    (files) =>
       `srcset="${files
         .map((file) => `${file.file} ${file.size}w`)
         .join(",\n")}"`
