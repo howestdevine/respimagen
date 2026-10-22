@@ -47,8 +47,32 @@ Options:
   -o, --outputdir  output directory                           [default: "output"]
   -c               clear the output directory before processing, default false
                                                       [boolean] [default: false]
+  -q, --quiet      don't print the HTML snippet       [boolean] [default: false]
 
 ```
+
+## The HTML snippet
+
+After every run, respimagen prints markup you can paste straight into your HTML: one block per
+source image, with the paths starting from the output directory.
+
+```bash
+respimagen beach.jpg -s 500,1000 -t avif,jpeg -o img
+```
+
+```html
+<picture>
+  <source type="image/avif" srcset="img/beach-500.avif 500w, img/beach-1000.avif 1000w" sizes="100vw">
+  <img src="img/beach-1000.jpeg" srcset="img/beach-500.jpeg 500w, img/beach-1000.jpeg 1000w" sizes="100vw" width="1000" height="666" alt="">
+</picture>
+```
+
+- One filetype gives a plain `<img>`. Several give a `<picture>`: a `<source>` per type, and the
+  **last** type in `-t` goes on the `<img>` as the fallback. So list them from best to safest:
+  `-t avif,webp,jpeg`.
+- `width` and `height` are those of the largest file, so the browser reserves the right space.
+- Two things are left to you: write the `alt` text, and replace `sizes="100vw"` with the width the
+  image really gets in your layout. Respimagelint (<https://ausi.github.io/respimagelint/>) measures it.
 
 ## Examples
 
@@ -93,6 +117,7 @@ const result = await processPath('photo.jpg', {
 
 console.log(result.output); // Array of processed files
 console.log(result.srcset); // Srcset string for responsive images
+console.log(result.html); // The same snippet the CLI prints
 
 // Process a directory
 const dirResult = await processPath('./images', {
@@ -112,5 +137,7 @@ npm test
 
 ## Dependencies
 
-- **sharp** (^0.34.4): Image processing
-- **yargs** (^18.0.0): CLI argument parsing
+- **sharp** (^0.35.5): Image processing
+- **yargs** (^18.2.0): CLI argument parsing
+
+Requires Node.js 20.9 or later.
