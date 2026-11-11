@@ -25,10 +25,14 @@ const argv = yargs(process.argv.slice(2))
   )
   .describe("c", "clear the output directory before processing, default false")
   .boolean("c")
+  .alias("q", "quiet")
+  .describe("q", "don't print the HTML snippet")
+  .boolean("q")
   .default({
     filetypes: "avif",
     outputdir: "output",
     c: false,
+    q: false,
   })
   .example(
     "$0 beach.jpg -s 500,750 -t webp,avif",
@@ -84,8 +88,11 @@ try {
 
   console.log("Everything done");
 
-  if (result.srcset) {
-    console.log(`\n` + result.srcset);
+  if (result.html && !argv.quiet) {
+    console.log(`\n${result.html}\n`);
+    console.log(
+      `Paste it, then: write the alt text, and replace sizes="100vw" with the width the image really gets (respimagelint tells you). Paths start from where you ran this command.`
+    );
   }
 } catch (error) {
   console.error(`Error: ${error.message}`);

@@ -21,7 +21,7 @@ const ensureDir = async (d) => {
   await fs.mkdir(d, { recursive: true });
 };
 
-test("integration CLI directory", async (t) => {
+test("integration CLI directory", async () => {
   await ensureDir(tmpDir);
   await ensureDir(fixturesDir);
 

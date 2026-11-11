@@ -11,7 +11,7 @@ Respimagen is a Node.js CLI tool and library for batch image processing. It resi
 - **Exports**: `processPath(input, options)`
   - `input`: string - file path or directory
   - `options`: object with `{ sizes, filetypes, outputdir, clear }`
-  - Returns: `Promise<{ output: Array, srcset?: string }>`
+  - Returns: `Promise<{ output: Array, srcset?: string, html: string }>`
 - Contains all image processing logic using Sharp
 - Handles both single files and directories
 - Validates filetypes and throws errors for unknown formats
@@ -30,6 +30,8 @@ Respimagen is a Node.js CLI tool and library for batch image processing. It resi
   - Groups files by extension
   - Formats srcset strings for responsive images
   - Filters invalid entries (missing ext/size)
+- **Exports**: `htmlGenerator(files, basePath)`
+  - Builds the `<img>` / `<picture>` snippet the CLI prints, one block per source image
 
 ### CLI Wrapper (`bin/respimagen.mjs`)
 
